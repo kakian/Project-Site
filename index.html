@@ -6,6 +6,8 @@
     <title>Project Showcase</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
             background-color: #f8fbff; /* Extremely light blue background, almost white */
@@ -50,13 +52,63 @@
         /* Make the modal smaller */
         .modal-dialog {
             max-width: 60%; /* Adjust width to make the modal smaller */
+            margin: 30px auto;
         }
         .modal-content {
             height: auto; /* Adjust height based on content */
+            max-height: 100vh;
         }
         #projectModal .modal-body {
-            height: 400px; /* Example fixed height, adjust as needed */
-            overflow-y: auto; /* Add scroll for overflow content */
+            padding: 0; /* Removes padding inside the modal body */
+            height: auto; /* Adjust based on content */
+        }
+        /* Iframe styling to fill the modal body */
+        #projectModal iframe {
+            width: 100%; /* Ensures iframe takes full width of the modal body */
+            height: 80vh; /* Adjust height to avoid outer scrollbar, consider viewport height */
+            border: none; /* Removes border around iframe */
+        }
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 100%; /* Adjust based on your needs */
+        }
+        .iframe-container iframe {
+            width: 100%; /* Full width of the container */
+            height: 1000px; /* Increase height as needed */
+            border: none;
+        }        
+        .iframe-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0); /* Fully transparent */
+            z-index: 10; /* Above the iframe */
+        }
+        .mouse-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 20; /* Ensure it's above the iframe */
+            background: rgba(255, 255, 255, 0); /* Transparent; adjust as needed */
+        }
+        .iframe-wrapper {
+            position: relative;
+            width: 100%; /* or specific width */
+            height: auto; /* should match the iframe height */
+        }
+        .carousel-control-center {
+            position: absolute;
+            top: 50%; /* Adjust this value as needed */
+            left: 50%; /* Centers the button */
+            transform: translate(-50%, -50%); /* Adjust positioning */
+            z-index: 5;
+            color: #fff; /* Example color, adjust as needed */
+            font-size: 24px; /* Adjust size as needed */
         }
     </style>
 </head>
@@ -66,23 +118,35 @@
 <div id="projectsCarousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <iframe src="https://zhixinrp.github.io/World-Xplore/" style="width:100%; height:500px; border:none;" data-target-url="https://zhixin09.github.io/Hangman-React/"></iframe>
+            <div class="iframe-container">
+                <iframe src="https://zhixinrp.github.io/World-Xplore/" style="width:100%;  border:none;"></iframe>
+                <div class="iframe-overlay" data-target-url="https://zhixinrp.github.io/World-Xplore/"></div>
+            </div>
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="car_img_hangman.png" alt="Project 2" data-target-url="https://zhixin09.github.io/Hangman-React/">
+            <div class="iframe-container">
+                <iframe src="https://zhixin09.github.io/Hangman-React/" style="width:100%;  border:none;"></iframe>
+                <div class="iframe-overlay" data-target-url="https://zhixin09.github.io/Hangman-React//"></div>
+            </div>
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="car_img_kenneth.png" alt="Project 2" data-target-url="https://pohbear.github.io/portfolio-website/index.html">
+            <div class="iframe-container">
+                <iframe src="https://pohbear.github.io/portfolio-website/index.html" style="width:100%;  border:none;"></iframe>
+                <div class="iframe-overlay" data-target-url="https://pohbear.github.io/portfolio-website/index.html"></div>
+            </div>
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="car_img_atmosphere.png" alt="Project 2" data-target-url="https://vincent-neo.com/apps">
+            <div class="iframe-container">
+                <iframe src="https://vincent-neo.com/apps" style="width:100%;  border:none;"></iframe>
+                <div class="iframe-overlay" data-target-url="https://vincent-neo.com/apps" data-disable-click="true"></div>
+            </div>
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="car_img_alcrd.png" alt="Project 2" data-target-url="https://rp360.life/staff/alcrd/">
+            <div class="iframe-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/Il6t5wCqzzI?si=vMswvsAE5VvY3m78" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
         </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="car_img_atmosphere.png" alt="Project 2" data-target-url="https://vincent-neo.com/apps">
-        </div>
+        
         <!-- Add more projects as carousel-item elements here -->
     </div>
 </div>
@@ -92,6 +156,10 @@
     <a class="carousel-control-prev" href="#projectsCarousel" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
+    </a>
+    <!-- Play/Pause control -->
+    <a id="carouselPlayPause" class="carousel-control-center" role="button">
+        <i class="fas fa-pause"></i> <!-- The icon starts as pause, indicating the carousel is playing -->
     </a>
     <a class="carousel-control-next" href="#projectsCarousel" role="button" data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
@@ -120,10 +188,32 @@
 
 <script>
 $(document).ready(function(){
-    $('.carousel-item img').click(function(){
-        var targetUrl = $(this).attr('data-target-url');
-        $('#projectModal .modal-body').html(`<iframe src="${targetUrl}" frameborder="0" style="width:100%;height:80vh;"></iframe>`);
-        $('#projectModal').modal('show');
+    var isPlaying = true; // Since the carousel plays automatically by default
+
+    $('#carouselPlayPause').click(function() {
+        if (isPlaying) {
+            $('#projectsCarousel').carousel('pause');
+            $(this).find('i').removeClass('fa-pause').addClass('fa-play');
+        } else {
+            $('#projectsCarousel').carousel('cycle');
+            $(this).find('i').removeClass('fa-play').addClass('fa-pause');
+        }
+        isPlaying = !isPlaying; // Toggle the state
+    });
+    $('.carousel-item img, .iframe-overlay').click(function(){
+        var targetUrl = $(this).data('target-url'); // Fallback to src if data-target-url is not available
+        var disableClick = $(this).data('disable-click');
+        if(disableClick){
+            $('#projectModal .modal-body').html(`<div class="iframe-wrapper">
+                <iframe src="${targetUrl}" frameborder="0" style="width:100%; height:180vh;"></iframe>
+                <div class="mouse-overlay"></div>
+            </div>`);
+            $('#projectModal').modal('show');
+        }
+        else{
+            $('#projectModal .modal-body').html(`<iframe src="${targetUrl}" frameborder="0" style="width:100%;height:180vh;"></iframe>`);
+            $('#projectModal').modal('show');
+        }        
     });
 
     $('#projectModal .close').click(function(){
