@@ -14,8 +14,8 @@
         }
         #projectsCarousel {
             position: relative;
-            height: calc(100vh - 70px); /* Adjust height to be full viewport height minus control bar height */
-            margin-bottom: 70px; /* Space for the fixed control bar */
+            height: calc(100vh - 100px); /* Adjust height to be full viewport height minus control bar height */
+            margin-bottom: 100px; /* Space for the fixed control bar */
         }
         .carousel-inner {
             height: 100%;
@@ -43,9 +43,17 @@
         .carousel-control-prev-icon, .carousel-control-next-icon {
             background-color: #ccc; /* Dark background for better visibility */
             border-radius: 50%;
-            width: 80px;
-            height: 80px;
-        }px;
+            width: 50px;
+            height: 50px;
+        }.modal-dialog {
+            max-width: 60%; /* Adjust width to make the modal smaller */
+        }
+        .modal-content {
+            height: auto; /* Adjust height based on content */
+        }
+        #projectModal .modal-body {
+            height: 400px; /* Example fixed height, adjust as needed */
+            overflow-y: auto; /* Add scroll for overflow content */
         }
     </style>
 </head>
