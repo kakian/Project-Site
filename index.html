@@ -210,7 +210,7 @@
 $(document).ready(function(){
     var isPlaying = true; // Since the carousel plays automatically by default
 
-    $('#carouselPlayPause').click(function() {
+    /*$('#carouselPlayPause').click(function() {
         if (isPlaying) {
             $('#projectsCarousel').carousel('pause');
             $(this).find('i').removeClass('fa-pause').addClass('fa-play');
@@ -219,7 +219,7 @@ $(document).ready(function(){
             $(this).find('i').removeClass('fa-play').addClass('fa-pause');
         }
         isPlaying = !isPlaying; // Toggle the state
-    });
+    });*/
     $('.carousel-item img, .iframe-overlay').click(function(){
         var targetUrl = $(this).data('target-url'); // Fallback to src if data-target-url is not available
         var disableClick = $(this).data('disable-click');
@@ -265,7 +265,7 @@ $(document).ready(function(){
     }
 
     // Handle the play/pause button click
-    /*$('#carouselPlayPause').click(function() {
+    $('#carouselPlayPause').click(function() {
         if (isPlaying) {
             // If the carousel is playing, pause it and start the countdown timer
             $('#projectsCarousel').carousel('pause');
@@ -279,7 +279,7 @@ $(document).ready(function(){
             $("#countdownTimer").text(""); // Clear the countdown display
         }
         isPlaying = !isPlaying; // Toggle the playing state
-    });*/
+    });
     // Add countdown ends
 });
 </script>
