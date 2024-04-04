@@ -174,9 +174,12 @@
         <span class="sr-only">Previous</span>
     </a>
     <!-- Play/Pause control -->
+    <!-- Play/Pause control -->
     <a id="carouselPlayPause" class="carousel-control-center" role="button">
         <i class="fas fa-pause"></i> <!-- The icon starts as pause, indicating the carousel is playing -->
+        <span id="countdownTimer"></span> <!-- Countdown timer display -->
     </a>
+
     <a class="carousel-control-next" href="#projectsCarousel" role="button" data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
@@ -237,17 +240,63 @@ $(document).ready(function(){
         $('#projectModal').modal('hide');
     });
 
-    /*$('#projectsCarousel').on('slid.bs.carousel', function () {
-        // Get the interval from the current active item
-        var interval = $(this).find('.carousel-item.active').attr('data-interval');
-        
-        // Update the carousel's interval
-        $(this).data('bs.carousel')._config.interval = interval;
-        
-        // Optional: Restart the carousel to apply the new interval
-        // Note: This might not be necessary unless you're experiencing timing issues
-        $(this).carousel('cycle');
-    });*/
+    // Add countdown
+    var isPlaying = true;
+    var countdown; // Holds the setInterval for the countdown
+    var extendedTime = 30000; // 30 seconds in milliseconds
+    var countdownElement = $('#countdownTimer'); // Element to display the countdown
+    var defaultInterval = $('#projectsCarousel').data('bs.carousel')._config.interval; // Store the default interval
+    var extendedIntervalTimeout; // Holds the setTimeout for the extended interval
+
+    function startCountdown(duration) {
+        var timer = duration, minutes, seconds;
+        countdown = setInterval(function () {
+            minutes = parseInt(timer / 60000, 10);
+            seconds = parseInt((timer % 60000) / 1000, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            countdownElement.text(minutes + ":" + seconds);
+
+            if (--timer < 0) {
+                clearInterval(countdown);
+                countdownElement.text(''); // Clear the countdown timer display
+            }
+        }, 1000);
+    }
+
+    $('#carouselPlayPause').click(function() {
+        if (isPlaying) {
+            // Pause the carousel
+            $('#projectsCarousel').carousel('pause');
+            $(this).find('i').removeClass('fa-pause').addClass('fa-play');
+            
+            // Clear existing timeout and intervals
+            clearTimeout(extendedIntervalTimeout);
+            clearInterval(countdown);
+
+            // Start the extended interval and countdown
+            extendedIntervalTimeout = setTimeout(function(){
+                $('#projectsCarousel').carousel('next');
+            }, extendedTime);
+
+            startCountdown(extendedTime / 1000); // Start countdown in seconds
+
+        } else {
+            // Play the carousel
+            $('#projectsCarousel').carousel('cycle');
+            $(this).find('i').removeClass('fa-play').addClass('fa-pause');
+
+            // Clear the extended interval and countdown when resuming normal play
+            clearTimeout(extendedIntervalTimeout);
+            clearInterval(countdown);
+            countdownElement.text(''); // Clear the countdown timer display
+        }
+        isPlaying = !isPlaying; // Toggle the state
+    });
+
+    // Add countdown ends
 });
 </script>
 
