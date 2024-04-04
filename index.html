@@ -241,59 +241,49 @@ $(document).ready(function(){
     });
 
     // Add countdown
-    var isPlaying = true;
-    var countdown; // Holds the setInterval for the countdown
-    var extendedTime = 30000; // 30 seconds in milliseconds
-    var countdownElement = $('#countdownTimer'); // Element to display the countdown
-    var defaultInterval = $('#projectsCarousel').data('bs.carousel')._config.interval; // Store the default interval
-    var extendedIntervalTimeout; // Holds the setTimeout for the extended interval
+    var isPlaying = true; // Tracks the playing state
+    var countdownInterval; // For the countdown timer
+    var countdownDuration = 30; // Duration to extend the slide time in seconds
+    var countdownRemaining; // Time remaining for the countdown
 
-    function startCountdown(duration) {
-        var timer = duration, minutes, seconds;
-        countdown = setInterval(function () {
-            minutes = parseInt(timer / 60000, 10);
-            seconds = parseInt((timer % 60000) / 1000, 10);
-
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
-
-            countdownElement.text(minutes + ":" + seconds);
-
-            if (--timer < 0) {
-                clearInterval(countdown);
-                countdownElement.text(''); // Clear the countdown timer display
-            }
-        }, 1000);
+    // Function to update the countdown timer next to the play/pause button
+    function updateCountdownTimer() {
+        if (countdownRemaining > 0) {
+            $('#countdownTimer').text(' (' + countdownRemaining + 's)');
+            countdownRemaining--;
+        } else {
+            clearInterval(countdownInterval);
+            $('#countdownTimer').text(''); // Clear countdown timer text when finished
+        }
     }
 
+    // Handle play/pause button click
     $('#carouselPlayPause').click(function() {
         if (isPlaying) {
-            // Pause the carousel
             $('#projectsCarousel').carousel('pause');
             $(this).find('i').removeClass('fa-pause').addClass('fa-play');
-            
-            // Clear existing timeout and intervals
-            clearTimeout(extendedIntervalTimeout);
-            clearInterval(countdown);
 
-            // Start the extended interval and countdown
-            extendedIntervalTimeout = setTimeout(function(){
-                $('#projectsCarousel').carousel('next');
-            }, extendedTime);
+            // Start countdown timer when pausing
+            countdownRemaining = countdownDuration;
+            countdownInterval = setInterval(updateCountdownTimer, 1000);
 
-            startCountdown(extendedTime / 1000); // Start countdown in seconds
+            // Extend the current slide's time by adding 30 seconds
+            setTimeout(function() {
+                if (!isPlaying) { // Check if still paused before moving to the next slide
+                    $('#projectsCarousel').carousel('next');
+                }
+            }, countdownDuration * 1000);
 
         } else {
-            // Play the carousel
             $('#projectsCarousel').carousel('cycle');
             $(this).find('i').removeClass('fa-play').addClass('fa-pause');
 
-            // Clear the extended interval and countdown when resuming normal play
-            clearTimeout(extendedIntervalTimeout);
-            clearInterval(countdown);
-            countdownElement.text(''); // Clear the countdown timer display
+            // Clear countdown timer when resuming
+            clearInterval(countdownInterval);
+            $('#countdownTimer').text('');
         }
-        isPlaying = !isPlaying; // Toggle the state
+
+        isPlaying = !isPlaying; // Toggle play state
     });
 
     // Add countdown ends
