@@ -127,36 +127,36 @@
 <!-- Carousel -->
 <div id="projectsCarousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
-        <div class="carousel-item active">
+        <div class="carousel-item active" data-interval="1000">
             <div class="iframe-container">
                 <iframe src="https://zhixinrp.github.io/World-Xplore/" style="width:100%;  border:none;"></iframe>
                 
             </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-interval="1000">
             <div class="iframe-container">
                 <iframe class="scaledown" src="https://zhixin09.github.io/Hangman-React/" style="width:100%;  border:none;"></iframe>
                 <!--<div class="iframe-overlay" data-target-url="https://zhixin09.github.io/Hangman-React//"></div>-->
             </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-interval="1000">
             <div class="iframe-container">
                 <iframe src="https://pohbear.github.io/portfolio-website/index.html" style="width:100%;  border:none;"></iframe>
                 <!--<div class="iframe-overlay" data-target-url="https://pohbear.github.io/portfolio-website/index.html"></div>-->
             </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-interval="1000">
             <div class="iframe-container">
                 <iframe src="https://vincent-neo.com/apps" style="width:100%;  border:none;"></iframe>
                 <div class="iframe-overlay" data-target-url="https://vincent-neo.com/apps" data-disable-click="true"></div>
             </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-interval="120000">
             <div class="iframe-container">
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/Il6t5wCqzzI?si=vMswvsAE5VvY3m78&autoplay=1&mute=1&enablejsapi=1&controls=1&loop=1&playlist=VIDEO_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-interval="180000">
             <div class="iframe-container">
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/35vkxEPoOMo?si=rWyiFKUD7giKXxBz&autoplay=1&mute=1&enablejsapi=1&controls=1&loop=1&playlist=VIDEO_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
@@ -233,6 +233,18 @@ $(document).ready(function(){
     $('#projectModal .close').click(function(){
         $('#projectModal .modal-body').html('');
         $('#projectModal').modal('hide');
+    });
+
+    $('#projectsCarousel').on('slid.bs.carousel', function () {
+        // Get the interval from the current active item
+        var interval = $(this).find('.carousel-item.active').attr('data-interval');
+        
+        // Update the carousel's interval
+        $(this).data('bs.carousel')._config.interval = interval;
+        
+        // Optional: Restart the carousel to apply the new interval
+        // Note: This might not be necessary unless you're experiencing timing issues
+        // $(this).carousel('cycle');
     });
 });
 </script>
