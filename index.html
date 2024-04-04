@@ -253,7 +253,7 @@ $(document).ready(function(){
         // Update the countdown every second
         countdownTimerId = setInterval(function() {
             countdown--;
-
+            console.log(countdown);
             // Update the countdown timer display next to the play/pause button
             $("#countdownTimer").text(countdown + "s");
 
